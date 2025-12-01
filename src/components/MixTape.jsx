@@ -1013,6 +1013,7 @@ const MixTape = () => {
               color={getCurrentColor()}
               bgColor={getCurrentBgColor()}
               title={mixtapeTitle}
+              message={personalMessage}
               sender={senderName}
               font={selectedFont}
               size="large"
