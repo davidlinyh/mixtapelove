@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+# 📼 MixTape
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Share music the way it was meant to be shared.**
 
-## Available Scripts
+MixTape is a web app that transforms Spotify playlists into beautiful, nostalgic cassette tapes with full playback. Create personalized mixtapes, customize the design, and share them with anyone — no account required.
 
-In the project directory, you can run:
+## ✨ Features
 
-### `npm start`
+- 🎵 **Import Spotify Playlists** - Convert any public Spotify playlist into a mixtape
+- 📼 **Realistic Cassette Design** - Authentic cassette tape with spinning reels and customizable colors  
+- 🎨 **Full Customization** - Choose colors, fonts, backgrounds, and add personal messages
+- 🎧 **Full Playback** - Recipients can listen directly in the browser via YouTube
+- 💌 **Shareable Links** - Share your mixtape with a unique URL
+- 🚀 **No Account Required** - Both creators and listeners need zero authentication
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 Quick Start
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+- Node.js 14+ and npm
+- Spotify Developer Account  
+- Google Cloud Account (for YouTube API)
+- Supabase Account
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Installation
 
-### `npm run build`
+1. **Clone the repository**
+   \`\`\`bash
+   git clone https://github.com/yourusername/mixtape.git
+   cd mixtape
+   \`\`\`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. **Install dependencies**
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Set up environment variables**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   Copy \`.env.example\` to \`.env\`:
+   \`\`\`bash
+   cp .env.example .env
+   \`\`\`
 
-### `npm run eject`
+4. **Configure API Keys** (see below)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+5. **Run the development server**
+   \`\`\`bash
+   npm start
+   \`\`\`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+6. **Open http://localhost:3000**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🔑 API Setup
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Spotify API
 
-## Learn More
+1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+2. Create a new app
+3. Copy the **Client ID** and **Client Secret**
+4. Add to \`.env\`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### YouTube Data API
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+MixTape uses multiple YouTube API keys for quota rotation (10,000 units/day per key).
 
-### Code Splitting
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create projects (one per API key)
+3. Enable **YouTube Data API v3**
+4. Create API keys
+5. Add to \`.env\` as \`REACT_APP_YOUTUBE_API_KEY_1\`, \`_2\`, etc.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Tip**: 5 keys = ~500 songs/day quota
 
-### Analyzing the Bundle Size
+### Supabase
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. Create project at [Supabase](https://supabase.com)
+2. Copy **Project URL** and **anon key**
+3. Run migrations from SQL Editor:
+   - See \`supabase/migrations/\` folder
 
-### Making a Progressive Web App
+## 🔄 YouTube Quota Management
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Triple-layer caching system:
+1. **Memory Cache** - In-session lookups
+2. **Database Cache** - Global persistent cache
+3. **API Key Rotation** - Auto-switches when quota exceeded
 
-### Advanced Configuration
+Result: Day 1 = 500 songs, Day 2+ = 90%+ cache hits
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🚀 Deployment
 
-### Deployment
+### Vercel (Recommended)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Push to GitHub
+2. Import to [Vercel](https://vercel.com)
+3. Add environment variables
+4. Deploy!
 
-### `npm run build` fails to minify
+### Netlify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Push to GitHub  
+2. Import to [Netlify](https://netlify.com)
+3. Build: \`npm run build\`
+4. Publish: \`build\`
+5. Add environment variables
+6. Deploy!
+
+## 🐛 Troubleshooting
+
+**"All songs unavailable"**
+- Check YouTube API keys are valid
+- Verify quota in Google Cloud Console
+- Add more API keys to \`.env\`
+
+**"Failed to load playlist"**  
+- Ensure playlist is public
+- Verify Spotify credentials
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file
+
+## 🙏 Acknowledgments
+
+Built with love for music sharing ❤️📼
+
+---
+
+**Made by [Your Name]**
