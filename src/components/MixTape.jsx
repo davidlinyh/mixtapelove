@@ -1125,17 +1125,14 @@ const MixTape = () => {
           </div>
 
           <div className="text-center mt-8">
-            <button
-              onClick={() => {
-                navigate('/');
-                setView('landing');
-                setPlaylistUrl('');
-                setPlaylistData(null);
-              }}
-              className="text-sm text-gray-600 hover:text-gray-800"
+            <a
+              href={window.location.origin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-gray-600 hover:text-gray-800 inline-block"
             >
               Make your own mixtape →
-            </button>
+            </a>
           </div>
         </div>
       </div>
